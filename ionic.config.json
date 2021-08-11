@@ -1,0 +1,7 @@
+{
+  "name": "home-expense-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

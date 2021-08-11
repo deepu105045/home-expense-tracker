@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "home-expense-tracker",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
