@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="first"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>My Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-around">
+      <ion-col size="12" >
+        <div
+           class="main-box">
+        </div>
+      </ion-col>
+      <ion-col routerLink="{{item.path}}" routerLinkActive="router-link-active"   class="ion-align-self-center" sizeLg="3" sizeMd="4" sizeXs="6" *ngFor="let item of ImageCollection">
+        <div class="img-box" [style.background-image]="'url('+ item.url +')'"></div>
+        <ion-item-divider >
+          <ion-label>{{item.title}}</ion-label>
+        </ion-item-divider>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
