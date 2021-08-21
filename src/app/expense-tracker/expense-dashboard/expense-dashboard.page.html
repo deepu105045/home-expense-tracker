@@ -3,10 +3,56 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>expense-dashboard</ion-title>
+    <ion-title>Cashflow</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" offset="1" size-lg="12" offset-lg="4">
+        <ion-button (click)="backwards()">
+          <ion-icon slot="start" name="chevron-back-outline"> </ion-icon>
+        </ion-button>
+        <ion-button> {{currentYear}} - {{currentMonth}} </ion-button>
+        <ion-button (click)="forwards()">
+          <ion-icon slot="end" name="chevron-forward-outline">
+          </ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card *ngFor="let item of spendings | keyvalue">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4">{{item.key}}</ion-col>
+        <ion-col class="ion-text-right" size="4">{{item.value}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
 </ion-content>
+
+<ion-tab-bar slot="bottom">
+  <ion-tab-button (click)="openTransactionModal('Spending')">
+    <ion-icon name="trending-down-outline"></ion-icon>
+    <ion-label>Spending</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button (click)="openTransactionModal('Income')">
+    <ion-icon name="trending-up-outline"></ion-icon>
+    <ion-label>Income</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button (click)="openTransactionModal('Investment')">
+    <ion-icon name="logo-bitcoin"></ion-icon>
+    <ion-label>Investment</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button (click)="openSettings()">
+    <ion-icon name="settings"></ion-icon>
+    <ion-label>Settings</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>
+

@@ -9,12 +9,13 @@ import { AuthService } from '../service/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  displayName: string;
   loginform: any;
   constructor(private fb: FormBuilder, private loginService: AuthService,public router: Router) { }
 
   ngOnInit() {
     this.loginform = this.fb.group({
-      email:['test@test.com',[Validators.required, Validators.email]],
+      email:['deepu@deepu.com',[Validators.required, Validators.email]],
       password:['12345678',[Validators.required, Validators.minLength(1)]]
     });
   }
@@ -28,10 +29,13 @@ export class LoginPage implements OnInit {
 
   login(){
     this.loginService.login(this.email.value, this.password.value).then(res =>{
-      this.router.navigate(['dashboard']);
+      this.displayName = res.user.displayName ;
+      this.router.navigate(['dashboard'],{ queryParams: {displayName: this.displayName}});
     }).catch(error =>{
       console.log('There are some login issues.' + error) ;
     });
   }
+
+
 
 }

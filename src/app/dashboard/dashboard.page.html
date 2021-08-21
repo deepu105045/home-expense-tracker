@@ -3,24 +3,51 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="first"></ion-menu-button>
     </ion-buttons>
-    <ion-title>My Dashboard</ion-title>
+    <ion-title>Welcome {{displayName}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row class="ion-justify-content-around">
-      <ion-col size="12" >
-        <div
-           class="main-box">
-        </div>
-      </ion-col>
-      <ion-col routerLink="{{item.path}}" routerLinkActive="router-link-active"   class="ion-align-self-center" sizeLg="3" sizeMd="4" sizeXs="6" *ngFor="let item of ImageCollection">
-        <div class="img-box" [style.background-image]="'url('+ item.url +')'"></div>
-        <ion-item-divider >
-          <ion-label>{{item.title}}</ion-label>
-        </ion-item-divider>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div *ngFor="let family of families">
+    <ion-button  expand="block" fill="clear">
+      {{family.name}}
+    </ion-button>
+    <ion-grid>
+
+      <ion-row class="ion-justify-content-around">
+        <ion-col routerLink="{{item.path}}/{{family.familyid}}" routerLinkActive="router-link-active"
+                 class="ion-align-self-center" sizeLg="3" sizeMd="4" sizeXs="6"
+                 *ngFor="let item of imageCollection">
+          <div class="img-box" [style.background-image]="'url('+ item.url +')'"></div>
+          <ion-item>
+            <ion-label class="title-text">{{item.title}}</ion-label>
+          </ion-item>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-tabs>
+
+    <!-- <ion-tab-bar slot="bottom">
+      <ion-tab-button >
+        <ion-icon name="search"></ion-icon>
+        <ion-label>Search</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="openSettings()">
+        <ion-icon name="settings"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </ion-tab-button>
+
+
+    </ion-tab-bar> -->
+
+  </ion-tabs>
 </ion-content>

@@ -9,7 +9,7 @@ const routes: Routes = [
     component: DashboardPage
   },
   {
-    path: 'expense-dashboard',
+    path: 'expense-dashboard/:id',
     loadChildren: () => import('../expense-tracker/expense-dashboard/expense-dashboard.module').then( m => m.ExpenseDashboardPageModule)
   }
 ];

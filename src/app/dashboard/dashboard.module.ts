@@ -7,6 +7,10 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
+import { AuthService } from '../service/auth.service';
+import { AuthServiceImpl } from '../service/impl/auth.service.impl';
+import { FamilyService } from '../service/family.service';
+import { FamilyServiceImpl } from '../service/impl/family.service.impl';
 
 @NgModule({
   imports: [
@@ -15,6 +19,10 @@ import { DashboardPage } from './dashboard.page';
     IonicModule,
     DashboardPageRoutingModule
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardPage],
+  providers: [
+    { provide: AuthService, useClass: AuthServiceImpl },
+    { provide: FamilyService, useClass: FamilyServiceImpl }
+  ]
 })
 export class DashboardPageModule {}
