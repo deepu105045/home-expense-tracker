@@ -3,6 +3,8 @@ export interface User{
   name: string;
   email: string;
   password?: string;
+  uid?: string;
+  displayName?: string;
 }
 
 export interface Family{
@@ -12,13 +14,21 @@ export interface Family{
 }
 
 export interface Transaction{
-  date: Date;
+  date: any;
   category: string;
   amount: number;
-  note?: string;
+  notes?: string;
   userId: string;
   familyId: string;
   type?: string;
 
 }
 
+export interface CashflowGroup{
+  category: string;
+  amount: number;
+}
+
+export interface Category{
+  name: string;
+}

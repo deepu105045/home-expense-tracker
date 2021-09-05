@@ -13,7 +13,6 @@ import { FamilyService } from 'src/app/service/family.service';
 })
 export class CreateFamilyPage implements OnInit {
 
-  userData: any;
   form: FormGroup;
   myemail: string;
   allMembers: string[] = [];
@@ -21,8 +20,9 @@ export class CreateFamilyPage implements OnInit {
   constructor(private authService: AuthService, public router: Router, private fb: FormBuilder, private familyService: FamilyService) { }
 
   ngOnInit() {
-    this.userData = this.authService.userInfo();
-    this.myemail = this.userData.email;
+    this.authService.getMyDetails().subscribe(user =>{
+      this.myemail = user.email;
+    });
 
     this.form = new FormGroup({
       familyName: new FormControl(null,[Validators.required]),
@@ -39,14 +39,13 @@ export class CreateFamilyPage implements OnInit {
   onAddMemeber(){
     const memeberCtl = new FormControl(null,[Validators.required]);
     (<FormArray>this.form.get('members')).push(memeberCtl);
-
   }
 
   createFamily(){
     const name = this.form.get('familyName').value;
     this.allMembers = this.form.get('members').value;
     this.allMembers.push(this.myemail);
-    const members = this.allMembers.filter(e => e!=null)
+    const members = this.allMembers.filter(e => e!=null);
     const obj = { name, members };
     this.familyService.createFamily(obj).then(response =>{
       this.router.navigate(['dashboard']);

@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'expense-dashboard/:id',
     loadChildren: () => import('../expense-tracker/expense-dashboard/expense-dashboard.module').then( m => m.ExpenseDashboardPageModule)
+  },
+  {
+    path: 'expense-dashboard/:id/view',
+    loadChildren: () => import('../expense-tracker/view-transactions/view-transactions.module').then( m => m.ViewTransactionsPageModule)
   }
 ];
 

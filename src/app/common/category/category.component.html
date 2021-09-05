@@ -1,0 +1,16 @@
+<ion-item>
+  <ion-label position="floating">Category<ion-text color="danger">*</ion-text></ion-label>
+  <ion-input [value]="selectedValue" (ionInput) = "search($event)" (input)="selectedValue = $any($event.target).value"></ion-input>
+
+</ion-item>
+
+<div *ngIf="showList">
+  <ion-list *ngIf="categories$ |async as categories">
+    <ion-item *ngFor="let item of filteredCategories | keyvalue">
+      <ion-label (click)="selectItem(item.value )">{{item.value}}</ion-label>
+    </ion-item>
+  </ion-list>
+</div>
+
+
+

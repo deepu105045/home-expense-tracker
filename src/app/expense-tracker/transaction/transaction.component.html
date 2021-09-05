@@ -9,19 +9,15 @@
 
 <ion-content>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="ion-padding">
+  <form [formGroup]="form" class="ion-padding">
 
     <ion-item>
       <ion-label position="floating">Transaction Date<ion-text color="danger">*</ion-text></ion-label>
-      <ion-datetime formControlName="date" displayFormat="MM/DD/YYYY" value="2002-09-23T15:03:46.789">
+      <ion-datetime formControlName="date" displayFormat="MM/DD/YYYY" >
       </ion-datetime>
     </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Category<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input formControlName="category"></ion-input>
-    </ion-item>
-
+    <app-category (categorySelected)="addItem($event)"></app-category>
 
     <ion-item>
       <ion-label position="floating">Amount<ion-text color="danger">*</ion-text></ion-label>
@@ -39,6 +35,18 @@
   </form>
 
 
+
+    <ion-card *ngIf="type === 'Spending'">
+      <img src="../../../assets//icon/shopping.png" />
+    </ion-card>
+
+    <ion-card *ngIf="type === 'Income'">
+      <img src="../../../assets//icon/make_money.jpg" />
+    </ion-card>
+
+    <ion-card *ngIf="type === 'Investment'">
+      <img src="../../../assets//icon/invest.jpg" />
+    </ion-card>
 
 
 

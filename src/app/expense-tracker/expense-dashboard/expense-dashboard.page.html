@@ -10,27 +10,105 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="12" offset="1" size-lg="12" offset-lg="4">
-        <ion-button (click)="backwards()">
+      <ion-col size="10" offset="2" size-lg="12" offset-lg="4">
+        <ion-button size="small" (click)="navigation('previous')">
           <ion-icon slot="start" name="chevron-back-outline"> </ion-icon>
         </ion-button>
-        <ion-button> {{currentYear}} - {{currentMonth}} </ion-button>
-        <ion-button (click)="forwards()">
+        <ion-button size="small"> {{currentYear}} - {{currentMonth}} </ion-button>
+        <ion-button size="small" (click)="navigation('next')">
           <ion-icon slot="end" name="chevron-forward-outline">
           </ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
+
+
+
+
+    <ion-row>
+      <ion-col offset-lg="2" size-lg="8">
+        <ion-list class="ion-padding">
+          <ion-item-divider  *ngIf="balanceTotal$ |async as balanceTotal">
+            <ion-label > <h2><b>Balance</b></h2>  </ion-label>
+            <ion-label slot ="end" style="color: green;"> {{balanceTotal.total | number:'':'en'}}  </ion-label>
+          </ion-item-divider>
+
+          <ion-item-divider (click)="toggleIncome()" *ngIf="incomeTotal$ |async as incomeTotal">
+            <ion-label > <h2><b>Income</b></h2>  </ion-label>
+            <ion-label slot ="end" style="color: green;">  {{incomeTotal.total | number:'':'en'}} </ion-label>
+          </ion-item-divider>
+          <span *ngIf="showIncomeDetails">
+            <span *ngIf="income$ | async as income else loading" >
+              <ion-grid class="ion-padding">
+                <ion-row *ngFor="let item of income | keyvalue: keyDescOrder">
+                  <ion-col size="6">{{item.key}}</ion-col>
+                  <ion-col size="6">{{item.value | number:'':'en'}}</ion-col>
+                </ion-row>
+              </ion-grid>
+            </span>
+          </span>
+
+          <ion-item-divider (click)="toggleInvestment()" *ngIf="investmentTotal$ |async as investmentTotal">
+            <ion-label > <h2><b>Investment</b></h2>  </ion-label>
+            <ion-label slot ="end" style="color: green;">  {{investmentTotal.total | number:'':'en'}} </ion-label>
+          </ion-item-divider>
+          <span *ngIf="showInvestmentDetails">
+            <span *ngIf="investment$ | async as investment else loading">
+              <ion-grid class="ion-padding">
+                <ion-row *ngFor="let item of investment | keyvalue: keyDescOrder">
+                  <ion-col size="6">{{item.key}}</ion-col>
+                  <ion-col size="6">{{item.value | number:'':'en'}}</ion-col>
+                </ion-row>
+              </ion-grid>
+            </span>
+          </span>
+
+          <ion-item-divider *ngIf="spendingTotal$ |async as spendingTotal">
+            <ion-label > <h2><b>Spending</b></h2>  </ion-label>
+            <ion-label slot ="end" style="color: red;">  {{spendingTotal.total | number:'':'en'}} </ion-label>
+          </ion-item-divider>
+          <span *ngIf="showSpendingDetails">
+            <span *ngIf="spending$ | async as spendings else loading">
+              <ion-grid class="ion-padding">
+                <ion-row *ngFor="let item of spendings | keyvalue: keyDescOrder">
+                  <ion-col size="6">{{item.key}}</ion-col>
+                  <ion-col size="6">{{item.value | number:'':'en'}}</ion-col>
+                </ion-row>
+              </ion-grid>
+            </span>
+          </span>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
 
-  <ion-card *ngFor="let item of spendings | keyvalue">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="4">{{item.key}}</ion-col>
-        <ion-col class="ion-text-right" size="4">{{item.value}}</ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card>
+
+
+
+  <ng-template #loading>
+    <div class="ion-padding custom-skeleton">
+      <ion-grid>
+        <ion-row >
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+          <ion-col size="4"><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+</ng-template>
+
 
 </ion-content>
 
@@ -50,9 +128,13 @@
     <ion-label>Investment</ion-label>
   </ion-tab-button>
 
-  <ion-tab-button (click)="openSettings()">
+  <ion-tab-button (click)="viewTransactions()">
+    <ion-icon name="eye-outline"></ion-icon>
+    <ion-label>View Transactions</ion-label>
+  </ion-tab-button>
+  <!-- <ion-tab-button  (click)="openSettings()">
     <ion-icon name="settings"></ion-icon>
     <ion-label>Settings</ion-label>
-  </ion-tab-button>
+  </ion-tab-button> -->
 </ion-tab-bar>
 

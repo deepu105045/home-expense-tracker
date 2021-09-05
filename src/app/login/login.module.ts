@@ -6,6 +6,8 @@ import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 import { AuthServiceImpl } from '../service/impl/auth.service.impl';
 import { AuthService } from '../service/auth.service';
+import { SpinnerServiceImpl } from '../service/impl/Spinner.service.impl';
+import { SpinnerService } from '../service/Spinner.service';
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { AuthService } from '../service/auth.service';
   ],
   declarations: [LoginPage],
   providers: [
-    { provide: AuthService, useClass: AuthServiceImpl }
+    { provide: AuthService, useClass: AuthServiceImpl },
+    { provide: SpinnerService, useClass: SpinnerServiceImpl}
   ]
 })
 export class LoginPageModule {}

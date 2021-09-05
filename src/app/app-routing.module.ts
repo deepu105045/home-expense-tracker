@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'add-members',
     loadChildren: () => import('./family/add-members/add-members.module').then( m => m.AddMembersPageModule)
+  },
+  {
+    path: 'view-transactions',
+    loadChildren: () => import('./expense-tracker/view-transactions/view-transactions.module').then( m => m.ViewTransactionsPageModule)
   }
 ];
 @NgModule({

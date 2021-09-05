@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable,of,from } from 'rxjs';
 import firebase from 'firebase/app';
 
 @Injectable()
@@ -12,8 +12,12 @@ export class AuthServiceImpl implements AuthService {
   user='user';
   userData: any;
   user$: Observable<firebase.User>;
-  constructor( public afStore: AngularFirestore,public ngFireAuth: AngularFireAuth,public router: Router,
-               public ngZone: NgZone ) {
+  constructor( public afStore: AngularFirestore,public ngFireAuth: AngularFireAuth,public router: Router,public ngZone: NgZone ) {
+    this.setLocalStorage();
+  }
+
+  async setLocalStorage(){
+    await new Promise(f => setTimeout(f, 1000));
     this.user$ = this.ngFireAuth.authState;
     this.ngFireAuth.authState.subscribe(user => {
       if (user) {
@@ -25,20 +29,24 @@ export class AuthServiceImpl implements AuthService {
         JSON.parse(localStorage.getItem(this.user));
       }
     });
+    await new Promise(f => setTimeout(f, 1000));
+
   }
 
-
-  registerUser(user: User): Promise<any>{
-    return this.ngFireAuth.createUserWithEmailAndPassword(user.email, user.password).then(response =>{
+  async registerUser(user: User): Promise<any>{
+     return this.ngFireAuth.createUserWithEmailAndPassword(user.email, user.password).then(async response =>{
       response.user.updateProfile({
         displayName: user.name
       });
+      await this.setLocalStorage();
       return Promise.resolve(user.name);
     });
   }
 
-  login(username: any, password: any): Promise<any> {
-    return this.ngFireAuth.signInWithEmailAndPassword(username, password);
+  async login(username: any, password: any): Promise<firebase.auth.UserCredential> {
+    const data =await this.ngFireAuth.signInWithEmailAndPassword(username, password);
+    await this.setLocalStorage();
+    return data;
   }
 
   logout() {
@@ -47,13 +55,8 @@ export class AuthServiceImpl implements AuthService {
     });
   }
 
-  isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem(this.user));
-    return (user !== null) ? true : false;
-  }
-
-   userInfo() {
-    return JSON.parse(localStorage.getItem(this.user));
+  getMyDetails(): Observable<User>{
+   return of(JSON.parse(localStorage.getItem(this.user)));
   }
 
 

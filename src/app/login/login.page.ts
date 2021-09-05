@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ExpenseErrors } from '../common/ErrorMap';
 import { AuthService } from '../service/auth.service';
+import { SpinnerService } from '../service/Spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +13,13 @@ import { AuthService } from '../service/auth.service';
 export class LoginPage implements OnInit {
   displayName: string;
   loginform: any;
-  constructor(private fb: FormBuilder, private loginService: AuthService,public router: Router) { }
+  errorMessage: string;
+  constructor(private fb: FormBuilder, private loginService: AuthService,
+              public router: Router, private spinnerService: SpinnerService) { }
 
   ngOnInit() {
     this.loginform = this.fb.group({
-      email:['deepu@deepu.com',[Validators.required, Validators.email]],
+      email:['test@test.com',[Validators.required, Validators.email]],
       password:['12345678',[Validators.required, Validators.minLength(1)]]
     });
   }
@@ -28,12 +32,22 @@ export class LoginPage implements OnInit {
   }
 
   login(){
+    this.spinnerService.simpleLoader();
     this.loginService.login(this.email.value, this.password.value).then(res =>{
       this.displayName = res.user.displayName ;
-      this.router.navigate(['dashboard'],{ queryParams: {displayName: this.displayName}});
+      this.spinnerService.dismissLoader();
+      this.router.navigate(['dashboard']);
     }).catch(error =>{
-      console.log('There are some login issues.' + error) ;
+      this.handleLoginFailure(error);
     });
+  }
+
+  handleLoginFailure(error){
+    this.errorMessage = 'There are some issues try again.';
+    const errorObj = ExpenseErrors.errorObj;
+    const code =error.code;
+    this.errorMessage = errorObj[code];
+    this.spinnerService.dismissLoader();
   }
 
 

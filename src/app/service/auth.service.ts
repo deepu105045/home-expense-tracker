@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { User } from '../interfaces/expense-interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export abstract class AuthService {
-  abstract login(username,password): Promise<any> ;
+  abstract login(username: string,password: string): Promise<any> ;
   abstract registerUser(user: User): Promise<any> ;
   abstract logout(): void;
-  abstract isLoggedIn(): boolean;
-  abstract userInfo(): Promise<any>;
+  abstract getMyDetails(): Observable<User>;
 
 }

@@ -3,7 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="first"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Welcome {{displayName}}</ion-title>
+    <ion-title>Welcome
+      <span *ngIf="userInfo$ | async as user">
+        {{user.displayName}}
+      </span>
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon>
@@ -13,41 +17,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div *ngFor="let family of families">
-    <ion-button  expand="block" fill="clear">
-      {{family.name}}
-    </ion-button>
-    <ion-grid>
-
-      <ion-row class="ion-justify-content-around">
-        <ion-col routerLink="{{item.path}}/{{family.familyid}}" routerLinkActive="router-link-active"
-                 class="ion-align-self-center" sizeLg="3" sizeMd="4" sizeXs="6"
-                 *ngFor="let item of imageCollection">
-          <div class="img-box" [style.background-image]="'url('+ item.url +')'"></div>
-          <ion-item>
-            <ion-label class="title-text">{{item.title}}</ion-label>
-          </ion-item>
-
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <div *ngIf="families$ |async as families">
+    <div *ngFor="let family of families">
+      <ion-button  expand="block" fill="clear">
+        {{family.name}}
+      </ion-button>
+      <ion-grid>
+        <ion-row class="ion-justify-content-around">
+          <ion-col routerLink="{{item.path}}/{{family.familyid}}" routerLinkActive="router-link-active"
+                   class="ion-align-self-center" sizeLg="3" sizeMd="4" sizeXs="6"
+                   *ngFor="let item of imageCollection">
+            <div class="img-box" [style.background-image]="'url('+ item.url +')'"></div>
+            <ion-item>
+              <ion-label class="title-text">{{item.title}}</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </div>
-
-  <ion-tabs>
-
-    <!-- <ion-tab-bar slot="bottom">
-      <ion-tab-button >
-        <ion-icon name="search"></ion-icon>
-        <ion-label>Search</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button (click)="openSettings()">
-        <ion-icon name="settings"></ion-icon>
-        <ion-label>Settings</ion-label>
-      </ion-tab-button>
-
-
-    </ion-tab-bar> -->
-
-  </ion-tabs>
 </ion-content>

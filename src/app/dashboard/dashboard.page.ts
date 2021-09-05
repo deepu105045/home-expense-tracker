@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Family } from '../interfaces/expense-interface';
 import { AuthService } from '../service/auth.service';
 import { FamilyService } from '../service/family.service';
 
@@ -18,39 +20,22 @@ export class DashboardPage implements OnInit {
     {
       url: '../../assets/icon/fruit.png',
       title: 'Grocery Shopping'
-    },
-    // {
-    //   url: '../../assets/icon/diary1.png',
-    //   title: 'Diary'
-    // },
-    // {
-    //   url: '../../assets/icon/do-it-now.png',
-    //   title: 'Tasks'
-    // }
+    }
   ];
-  displayName: string;
-  userData: any;
-  myemail: any;
-  families: any;
 
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private familyService: FamilyService) { }
+  userInfo$: Observable<any>;
+  families$: Observable<Family[]>;
+
+  constructor(private router: Router, public authService: AuthService,private familyService: FamilyService) { }
 
   ngOnInit() {
-    this.displayName = this.route.snapshot.queryParamMap.get('displayName');
-    this.userData = this.authService.userInfo();
-    this.myemail = this.userData.email;
-    this.familyService.getFamilies(this.myemail).subscribe(familyInfo =>{
-      if(familyInfo.length === 0){
-        this.router.navigate(['create-family']);
-      }else{
-        this.families = familyInfo;
-      }
+    this.userInfo$ = this.authService.getMyDetails();
+    this.userInfo$.subscribe(userData =>{
+      this.families$ = this.familyService.getFamilies(userData.email);
     });
-
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
     this.router.navigate(['/']);
   }
