@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable guard-for-in */
 import { KeyValue } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Chart, registerables } from 'chart.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
-import { merge, Observable } from 'rxjs';
+import { merge, Observable, zip } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 import { Cashflow } from 'src/app/common/cashflow';
 import { CommonService } from 'src/app/service/common.service';
 import { TransactionService } from 'src/app/service/Transaction.service';
 import { TransactionComponent } from '../transaction/transaction.component';
 import { ViewTransactionsPage } from '../view-transactions/view-transactions.page';
+import { Transaction } from 'src/app/interfaces/expense-interface';
 
 @Component({
   selector: 'app-expense-dashboard',
@@ -17,6 +20,7 @@ import { ViewTransactionsPage } from '../view-transactions/view-transactions.pag
   styleUrls: ['./expense-dashboard.page.scss'],
 })
 export class ExpenseDashboardPage implements OnInit {
+
 
   familyId: any;
   currentMonth: string;
@@ -32,14 +36,11 @@ export class ExpenseDashboardPage implements OnInit {
   investmentTotal$: Observable<any>;
   balanceTotal$: Observable<any>;
 
-  spendingTotal =0.0;
-  incomeTotal = 0.0;
-  investmentTotal =0.0;
-  balance =0.0;
-
   showIncomeDetails = false;
   showInvestmentDetails= false;
   showSpendingDetails= true;
+
+
 
 
   keyDescOrder: (a: KeyValue<number, string>, b: KeyValue<number, string>) => number;
@@ -47,7 +48,9 @@ export class ExpenseDashboardPage implements OnInit {
 
   constructor(public modalController: ModalController, public actionSheetController: ActionSheetController,
               public router: Router,private activatedroute: ActivatedRoute,
-              private transactionService: TransactionService, private commonService: CommonService) { }
+              private transactionService: TransactionService, private commonService: CommonService) {
+                Chart.register(...registerables);
+              }
 
   async ngOnInit() {
     this.familyId = this.activatedroute.snapshot.paramMap.get('id');
@@ -60,12 +63,8 @@ export class ExpenseDashboardPage implements OnInit {
 
   }
 
-  async navigation(direction){
-    this.spendingTotal =0.0;
-    this.incomeTotal = 0.0;
-    this.investmentTotal =0.0;
-    this.balance =0.0;
 
+  async navigation(direction){
     this.index = +this.commonService.getKeyFromMonth(this.currentMonth);
 
     if(direction === 'previous'){
@@ -90,7 +89,6 @@ export class ExpenseDashboardPage implements OnInit {
 
   async groupall(){
     const total ='total';
-    this.balance =0;
 
     // Get Income, Spending and investmen totals
     this.spendingTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.SPENDING);
@@ -98,40 +96,10 @@ export class ExpenseDashboardPage implements OnInit {
     this.investmentTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.INVESTMENT);
     this.balanceTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.BALANCE);
 
-    //Get indiciual categories under each main category and its consolidated amount.
+    //Get indiviual categories under each main category and its consolidated amount.
     this.spending$ = this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.SPENDING);
     this.income$ = this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.INCOME);
     this.investment$ = this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.INVESTMENT);
-
-
-    await this.spendingTotal$.pipe(take(1)).subscribe(res =>{
-      if(res){
-        this.spendingTotal = res[total];
-      }
-    });
-
-    await this.incomeTotal$.pipe(take(1)).subscribe(res =>{
-      if(res){
-        this.incomeTotal = res[total];
-      }
-    });
-
-    await this.investmentTotal$.pipe(take(1)).subscribe(res =>{
-      if(res){
-        this.investmentTotal = res[total];
-      }
-    });
-
-    await this.balanceTotal$.pipe(take(1)).subscribe(res =>{
-      if(res){
-        this.balance = res[total];
-      }
-    });
-
-
-
-
-
 
   }
 
@@ -194,11 +162,6 @@ export class ExpenseDashboardPage implements OnInit {
   toggleInvestment(){
     this.showInvestmentDetails = !this.showInvestmentDetails;
   }
-
-
-
-
-
 
 }
 

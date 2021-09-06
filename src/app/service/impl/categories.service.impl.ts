@@ -3,20 +3,29 @@ import { Injectable } from '@angular/core';
 import { CategoryService } from '../Category.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
+import firebase from 'firebase/app';
+
 
 @Injectable()
 export class CategoryServiceImpl implements CategoryService {
   config = 'config';
+  cashflowDoc = 'cashflow';
   categories = [];
 
   constructor(private afStore: AngularFirestore) {
   }
   getCategories(): Observable<any> {
-    return this.afStore.collection(this.config).doc('cashflow').valueChanges();
+    return this.afStore.collection(this.config).doc(this.cashflowDoc).valueChanges();
   }
 
   addCategory(category: Category) {
-    
+    console.log('Update category array : ' + category.name)
+    const ref = this.afStore.collection(this.config).doc(this.cashflowDoc);
+    ref.update(
+      {
+        categories: firebase.firestore.FieldValue.arrayUnion(category.name)
+      }
+    );
   }
 
 

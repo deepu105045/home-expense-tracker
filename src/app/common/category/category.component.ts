@@ -17,6 +17,7 @@ export class CategoryComponent implements OnInit {
   selectedValue;
   showList;
   categoriesField = 'categories';
+  searchTerm;
 
 
   constructor(public categoryService: CategoryService) {
@@ -30,19 +31,16 @@ export class CategoryComponent implements OnInit {
   ngOnInit() {}
 
   search(event) {
-    const searchTerm = event.srcElement.value;
-    if (!searchTerm.trim().length ) {
+
+    this.searchTerm = event.srcElement.value;
+    if (!this.searchTerm.trim().length ) {
       this.filteredCategories = [];
       this.showList = false;
       return;
     }
-    this.filteredCategories = this.categories.filter(item => item.toUpperCase().includes(searchTerm.toUpperCase()));
+    this.filteredCategories = this.categories.filter(item => item.toUpperCase().includes(this.searchTerm.toUpperCase()));
     this.showList = true;
-
-    if(this.filteredCategories.length === 0 ){
-        this.categorySelected.emit(this.selectedValue);
-
-    }
+    this.categorySelected.emit(this.searchTerm);
   }
 
   selectItem(value){

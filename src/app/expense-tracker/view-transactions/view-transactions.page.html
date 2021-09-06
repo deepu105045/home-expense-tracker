@@ -9,7 +9,7 @@
 
 <ion-content >
   <ion-list  *ngIf="transactions$">
-    <ion-item *ngFor="let item of transactions$ | async">
+    <ion-item *ngFor="let item of transactions">
       <ion-avatar slot="start" *ngIf="item.type =='Spending'">
         <img src="../../../assets/icon//expense.jpg">
       </ion-avatar>

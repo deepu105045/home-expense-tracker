@@ -46,7 +46,6 @@ export class TransactionComponent implements OnInit {
       this.userId = userInfo.uid;
     });
     const date = new Date(this.form.get('date').value);
-    // const category =  this.form.get('category').value;
     const category =this.category;
     const amount = this.form.get('amount').value;
     const userId = this.userId;
@@ -55,7 +54,6 @@ export class TransactionComponent implements OnInit {
     const notes = this.form.get('note').value;
     const obj ={userId,date,category,amount, type, familyId,notes};
     const categoryObj = {name:category};
-    console.log(obj)
     this.transactionService.addTransaction(obj).then(res =>{
       this.categoryService.addCategory(categoryObj);
       this.categoryService.getCategories();
