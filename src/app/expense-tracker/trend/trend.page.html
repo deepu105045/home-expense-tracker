@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Trend</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="showGraph()" expand="block" fill="clear" shape="round">
+          Show/Refresh Graph
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="show">
+
+      <ion-col size="12" size-sm>
+        <div *ngIf="trends$ |async">
+            <div class="chart-wrapper">
+              <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                [plugins]="lineChartPlugins">
+              </canvas>
+            </div>
+        </div>
+      </ion-col>
+
+
+      <ion-col size="12" size-sm>
+        <div>
+          <div class="chart-wrapper">
+            <canvas baseChart [datasets]="incomeChartData" [labels]="incomeChartLabels" [options]="lineChartOptions"
+              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+              [plugins]="lineChartPlugins">
+            </canvas>
+          </div>
+        </div>
+      </ion-col>
+
+
+      <ion-col size="12" size-sm>
+        <div>
+          <div>
+            <div class="chart-wrapper">
+              <canvas baseChart [datasets]="investmentChartData" [labels]="investmentChartLabels" [options]="lineChartOptions"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                [plugins]="lineChartPlugins">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

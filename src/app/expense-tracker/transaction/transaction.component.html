@@ -13,14 +13,14 @@
 
     <ion-item>
       <ion-label position="floating">Transaction Date<ion-text color="danger">*</ion-text></ion-label>
-      <ion-datetime formControlName="date" displayFormat="MM/DD/YYYY" >
+      <ion-datetime max="2030" formControlName="date" displayFormat="MM/DD/YYYY" >
       </ion-datetime>
     </ion-item>
 
     <app-category (categorySelected)="addItem($event)"></app-category>
 
     <ion-item>
-      <ion-label position="floating">Amount<ion-text color="danger">*</ion-text></ion-label>
+      <ion-label position="floating" >Amount<ion-text color="danger">*</ion-text></ion-label>
       <ion-input  formControlName="amount" type="number"></ion-input>
     </ion-item>
 
@@ -29,7 +29,7 @@
       <ion-input  formControlName="note"></ion-input>
     </ion-item>
 
-      <ion-button (click)="save()" color="primary" expand="block" >
+      <ion-button  (click)="save()" color="primary" expand="block" >
         Save
       </ion-button>
   </form>

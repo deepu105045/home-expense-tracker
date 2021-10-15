@@ -12,16 +12,17 @@ import { SpinnerServiceImpl } from 'src/app/service/impl/Spinner.service.impl';
 import { SharedModule } from 'src/app/common/shared.module';
 import { CategoryService } from 'src/app/service/Category.service';
 import { CategoryServiceImpl } from 'src/app/service/impl/categories.service.impl';
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
     CommonModule,
+    NgxChartsModule,
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
     ExpenseDashboardPageRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   declarations: [ExpenseDashboardPage,TransactionComponent],
   providers: [

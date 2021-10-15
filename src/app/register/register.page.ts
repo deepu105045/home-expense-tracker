@@ -62,14 +62,16 @@ export class RegisterPage implements OnInit {
     allMembers.push(this.email.value);
     const members = allMembers.filter(e => e!=null);
 
-
     const family = {name: familyName, members};
 
     this.loginService.registerUser(user).then(async response =>{
       console.log(response);
-      await this.familyService.createFamily(family);
-      this.spinnerService.dismissLoader();
-      this.router.navigate(['dashboard'],{ queryParams: {displayName: response}});
+      await this.familyService.createFamily(family).then(() =>{
+        this.spinnerService.dismissLoader();
+        this.router.navigate(['dashboard'],{ queryParams: {displayName: response}});
+      });
+
+
     }).catch(error =>{
       const errorObj = ExpenseErrors.errorObj;
       const code =error.code;

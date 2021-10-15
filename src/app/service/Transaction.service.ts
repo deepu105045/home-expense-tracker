@@ -7,8 +7,11 @@ import { Transaction } from '../interfaces/expense-interface';
 })
 export abstract class TransactionService {
   abstract addTransaction(transaction): Promise<any>;
+  abstract deleteTransaction(transaction): Promise<any>;
   abstract filterTransaction(familyId,type, year, month): Observable<any>;
   abstract getGroupedData(familyId,year,month,type): Observable<any>;
   abstract getTotals(familyId,year,month,type): Observable<any>;
   abstract viewTransactions(familyId,year,month): Observable<Transaction[]>;
+  abstract getAllTotals(familyId,year,month): Observable<any>;
+
 }

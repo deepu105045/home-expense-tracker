@@ -21,6 +21,7 @@ export interface Transaction{
   userId: string;
   familyId: string;
   type?: string;
+  transactionId?: string;
 
 }
 
@@ -32,3 +33,10 @@ export interface CashflowGroup{
 export interface Category{
   name: string;
 }
+
+export interface Trend{
+  name: string;
+  value: number;
+}
+
+

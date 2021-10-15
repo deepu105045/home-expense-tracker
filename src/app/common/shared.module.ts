@@ -11,7 +11,7 @@ import { IonicModule } from '@ionic/angular';
     IonicModule
   ],
   exports:[
-    CategoryComponent
+    CategoryComponent,
   ]
 })
 export class SharedModule { }

@@ -1,35 +1,34 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable guard-for-in */
 import { KeyValue } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Chart, registerables } from 'chart.js';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
-import { merge, Observable, zip } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Cashflow } from 'src/app/common/cashflow';
 import { CommonService } from 'src/app/service/common.service';
 import { TransactionService } from 'src/app/service/Transaction.service';
 import { TransactionComponent } from '../transaction/transaction.component';
 import { ViewTransactionsPage } from '../view-transactions/view-transactions.page';
-import { Transaction } from 'src/app/interfaces/expense-interface';
 
 @Component({
   selector: 'app-expense-dashboard',
   templateUrl: './expense-dashboard.page.html',
   styleUrls: ['./expense-dashboard.page.scss'],
 })
-export class ExpenseDashboardPage implements OnInit {
 
+
+export class ExpenseDashboardPage implements OnInit {
 
   familyId: any;
   currentMonth: string;
   currentYear: number;
   index: number;
 
-  spending$: Observable<any>;
-  income$: Observable<any>;
-  investment$: Observable<any>;
+  spendingCategories$: Observable<any>;
+  incomeCategories$: Observable<any>;
+  investmentCategories$: Observable<any>;
 
   spendingTotal$: Observable<any>;
   incomeTotal$: Observable<any>;
@@ -40,19 +39,14 @@ export class ExpenseDashboardPage implements OnInit {
   showInvestmentDetails= false;
   showSpendingDetails= true;
 
-
-
-
   keyDescOrder: (a: KeyValue<number, string>, b: KeyValue<number, string>) => number;
-
 
   constructor(public modalController: ModalController, public actionSheetController: ActionSheetController,
               public router: Router,private activatedroute: ActivatedRoute,
               private transactionService: TransactionService, private commonService: CommonService) {
-                Chart.register(...registerables);
               }
-
   async ngOnInit() {
+
     this.familyId = this.activatedroute.snapshot.paramMap.get('id');
     this.currentYear = await this.commonService.getCurrentYear();
     this.currentMonth = await this.commonService.getCurrentMonth();
@@ -60,9 +54,7 @@ export class ExpenseDashboardPage implements OnInit {
     await this.groupall();
     this.keyDescOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number =>
         a.value > b.value ? -1 : (b.value > a.value ? 1 : 0);
-
   }
-
 
   async navigation(direction){
     this.index = +this.commonService.getKeyFromMonth(this.currentMonth);
@@ -88,18 +80,20 @@ export class ExpenseDashboardPage implements OnInit {
   }
 
   async groupall(){
+
     const total ='total';
 
-    // Get Income, Spending and investmen totals
+    // Get Income, Spending and investment totals
     this.spendingTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.SPENDING);
     this.incomeTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.INCOME);
     this.investmentTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.INVESTMENT);
     this.balanceTotal$ = this.transactionService.getTotals(this.familyId,this.currentYear,this.index,Cashflow.BALANCE);
 
     //Get indiviual categories under each main category and its consolidated amount.
-    this.spending$ = this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.SPENDING);
-    this.income$ = this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.INCOME);
-    this.investment$ = this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.INVESTMENT);
+    this.spendingCategories$ = await this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.SPENDING);
+    this.incomeCategories$ = await this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.INCOME);
+    this.investmentCategories$ = await this.transactionService.getGroupedData(this.familyId,this.currentYear,this.index,Cashflow.INVESTMENT);
+
 
   }
 
@@ -162,6 +156,7 @@ export class ExpenseDashboardPage implements OnInit {
   toggleInvestment(){
     this.showInvestmentDetails = !this.showInvestmentDetails;
   }
+
 
 }
 

@@ -19,7 +19,6 @@ export class CategoryServiceImpl implements CategoryService {
   }
 
   addCategory(category: Category) {
-    console.log('Update category array : ' + category.name)
     const ref = this.afStore.collection(this.config).doc(this.cashflowDoc);
     ref.update(
       {

@@ -15,12 +15,19 @@ export class ViewTransactionsPage implements OnInit {
   @Input() familyId: string;
   transactions$: Observable<Transaction[]>;
   transactions;
+
   constructor(public modalController: ModalController,  private transactionService: TransactionService) { }
+
   ngOnInit() {
     this.transactions$ = this.transactionService.viewTransactions(this.familyId,this.year,this.month);
     this.transactions$.subscribe(results =>{
       results.sort((a,b)=>b.date - a.date);
-      this.transactions = results;
+
+      this.transactions = results.map(data => {
+        const fireBaseTime = new Date(data.date.seconds * 1000 + data.date.nanoseconds / 1000000, );
+        data.date = fireBaseTime;
+        return data;
+      });
       of(this.transactions);
     });
 
@@ -33,5 +40,13 @@ export class ViewTransactionsPage implements OnInit {
   onWillDismiss(){
     console.log('onWillDismiss');
   }
+
+  delete(transaction: Transaction){
+    this.transactionService.deleteTransaction(transaction).then(data =>{
+      console.log('Item deleted. and totals adjusted.');
+    });
+  }
+
+
 
 }

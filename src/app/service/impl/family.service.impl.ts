@@ -21,6 +21,7 @@ export class FamilyServiceImpl implements FamilyService {
   }
 
   getFamilies(email): Observable<any>{
+    console.log('Getting families for email :: ' + email)
     return this.afStore.collection(this.familyCollection, ref =>
        ref.where('members','array-contains',email))
        .valueChanges();

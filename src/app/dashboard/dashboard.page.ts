@@ -18,9 +18,11 @@ export class DashboardPage implements OnInit {
       path: '/dashboard/expense-dashboard'
     },
     {
-      url: '../../assets/icon/fruit.png',
-      title: 'Grocery Shopping'
+      url: '../../assets/icon/expense.jpg',
+      title: 'Cashflow Trend',
+      path: '/dashboard/cashflow-trend'
     }
+
   ];
 
   userInfo$: Observable<any>;

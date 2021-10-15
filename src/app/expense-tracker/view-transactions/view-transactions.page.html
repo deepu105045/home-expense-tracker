@@ -8,37 +8,47 @@
 </ion-header>
 
 <ion-content >
-  <ion-list  *ngIf="transactions$">
-    <ion-item *ngFor="let item of transactions">
-      <ion-avatar slot="start" *ngIf="item.type =='Spending'">
-        <img src="../../../assets/icon//expense.jpg">
-      </ion-avatar>
 
-      <ion-avatar slot="start" *ngIf="item.type =='Income'">
-        <img src="../../../assets/icon//money-bag.png">
-      </ion-avatar>
+  <ion-list *ngIf="transactions$">
+    <ion-item-sliding *ngFor="let item of transactions">
+      <ion-item >
+        <ion-avatar slot="start" *ngIf="item.type =='Spending'">
+          <img src="../../../assets/icon//expense.jpg">
+        </ion-avatar>
 
-      <ion-avatar slot="start" *ngIf="item.type =='Investment'">
-        <img src="../../../assets/icon//piggy-bank.jpg">
-      </ion-avatar>
+        <ion-avatar slot="start" *ngIf="item.type =='Income'">
+          <img src="../../../assets/icon//money-bag.png">
+        </ion-avatar>
 
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-float-left">
-              <h6 class="ion-text-capitalize">{{item.category}}</h6>
-              <small>{{item.date.toDate() | date: 'mediumDate'}}</small>
-              <div>
-                <ion-note>{{item.notes}}</ion-note>
-              </div>
+        <ion-avatar slot="start" *ngIf="item.type =='Investment'">
+          <img src="../../../assets/icon//piggy-bank.jpg">
+        </ion-avatar>
 
-          </ion-col>
-          <ion-col class="ion-float-right">
-              <h4>{{item.amount}}</h4>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-float-left">
+                <h6 class="ion-text-capitalize">{{item.category}}</h6>
+                <small>{{item.date | date: 'mediumDate'}}</small>
+                <div>
+                  <ion-note>{{item.notes}}</ion-note>
+                </div>
+
+            </ion-col>
+            <ion-col class="ion-float-right">
+                <h4>{{item.amount}}</h4>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger">
+          <ion-icon slot="icon-only" name="trash" (click)="delete(item)"></ion-icon>
+        </ion-item-option>
+        <!-- <ion-item-option>
+          <ion-icon  slot="icon-only"name="reader-outline" (click)="edit(item)"> </ion-icon>
+        </ion-item-option> -->
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
-
 </ion-content>
 

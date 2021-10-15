@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/service/auth.service';
 import { CategoryService } from 'src/app/service/Category.service';
@@ -25,8 +25,8 @@ export class TransactionComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       date:[new Date().toISOString()],
-      category:[''],
-      amount:[''],
+      category:['', Validators.required],
+      amount:['0.0',Validators.required],
       note:['']
     });
   }
