@@ -1,0 +1,13 @@
+
+<span *ngIf="showSpendingChart">
+  <div class="chart-wrapper">
+    <canvas baseChart [datasets]="spendingChartData"
+                      [labels]="spendingChartLabels"
+                      [options]="lineChartOptions"
+                      [colors]="lineChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"
+                      [plugins]="lineChartPlugins">
+    </canvas>
+  </div>
+</span>

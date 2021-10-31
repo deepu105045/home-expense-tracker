@@ -1,0 +1,12 @@
+<span *ngIf="showIncomeChart">
+  <div class="chart-wrapper">
+    <canvas baseChart [datasets]="incomeChartData"
+                      [labels]="incomeChartLabels"
+                      [options]="lineChartOptions"
+                      [colors]="lineChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"
+                      [plugins]="lineChartPlugins">
+    </canvas>
+  </div>
+</span>

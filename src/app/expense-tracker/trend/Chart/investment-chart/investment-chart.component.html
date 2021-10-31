@@ -1,0 +1,13 @@
+
+ <span *ngIf="showInvestmentChart">
+   <div class="chart-wrapper">
+     <canvas baseChart [datasets]="investmentChartData"
+                       [labels]="investmentChartLabels"
+                       [options]="lineChartOptions"
+                       [colors]="lineChartColors"
+                       [legend]="lineChartLegend"
+                       [chartType]="lineChartType"
+                       [plugins]="lineChartPlugins">
+     </canvas>
+   </div>
+ </span>
